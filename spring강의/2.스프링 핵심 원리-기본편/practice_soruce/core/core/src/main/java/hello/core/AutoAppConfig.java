@@ -17,8 +17,8 @@ import static org.springframework.context.annotation.ComponentScan.*;
 public class AutoAppConfig {
     // 수동등록 vs 자동등록 빈 충돌발생! 테스트시 수동등록빈이 자동으로 오버라이드 되지만
     // spring을 돌렸을때는 오버라이드가 기본으로 false 로 설정되어있기 때문에 오류가 발생한다.
-    @Bean(name = "memoryMemberRepository")
+    /*@Bean(name = "memoryMemberRepository")
     public MemberRepository memberRepository() {
         return new MemoryMemberRepository();
-    }
+    }*/
 }
