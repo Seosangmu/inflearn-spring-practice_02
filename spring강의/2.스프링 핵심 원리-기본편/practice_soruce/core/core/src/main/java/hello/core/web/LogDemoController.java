@@ -15,16 +15,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LogDemoController {
 
     //private final MyLogger myLogger; // MyLogger는 request스코프이기 때문에 스프링 실행시점에서 주입오류가 떠버린다.
-    private final ObjectProvider<MyLogger> myLoggerProvider; // 그래서 Provider 사용
+    //private final ObjectProvider<MyLogger> myLoggerProvider; // 그래서 Provider 사용
+    private final MyLogger myLogger; //MyLogger를 상속받은 MyLogger의 가짜 객체가 주입됨
     private final LogDemoService logDemoService;
 
     @RequestMapping("log-demo")
     @ResponseBody
     public String LogDemoController(HttpServletRequest request) {
-        MyLogger myLogger = myLoggerProvider.getObject();
         String requestURL = request.getRequestURL().toString(); // 이때 MyLogger가 빈생성,주입이 된다.(지연시킴)
-        myLogger.setRequestURL(requestURL);
 
+        System.out.println("myLogger = " + myLogger.getClass());
+        // MyLogger$$SpringCGLIB$$0 라는 프록시 클래스가 조회됨
+        // 가짜 프록시 객체는 요청이오면 그때 내부에서 진짜 빈을 요청하는 위임 로직이 들어있다.
+
+        myLogger.setRequestURL(requestURL);
         myLogger.log("controller test");
         logDemoService.logic("testID");
 
